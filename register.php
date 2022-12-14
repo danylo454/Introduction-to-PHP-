@@ -129,7 +129,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/_modalCropper.php');
         preview: imgPrev
     });
     image.onchange = function (e) {
-        // console.log("select file", e);
         const file = e.target.files[0];
         if (file) {
             const url = URL.createObjectURL(file);
@@ -142,9 +141,8 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/_modalCropper.php');
     }
     btnCrop.onclick = function (e) {
         const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("cropperModal"));
-        var imgsrc = document.getElementById("image").src;
-        imageUser.src = imgsrc;
-        console.log(imgsrc);
+        const base64 = cropper.getCroppedCanvas().toDataURL();
+        imageUser.src = base64;
         modal.hide();
 
     }

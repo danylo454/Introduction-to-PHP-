@@ -31,28 +31,54 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 <img class="logoImg"
                      id="imgAvatar"
                      alt=""
-                src="images/logo.jpg">
+                     src="images/logo.jpg">
                 <h1>Магазинчик<br>Додавання товару</h1>
 
             </div>
         </div>
 
-        <div class="custom__form">
-            <div class="custom__image-container">
-                <label id="add-img-label" for="add-single-img">Додати фото </label>
-                <input type="file" id="add-single-img" accept="image/jpeg"/>
+        <!--        <div class="container">-->
+        <!--            <div class="custom__form">-->
+        <!--                <div class="custom__image-container">-->
+        <!--                    <label id="add-img-label" for="add-single-img">Додати фото </label>-->
+        <!--                    <input type="file" id="add-single-img" accept="image/jpeg"/>-->
+        <!--                </div>-->
+        <!--                <input-->
+        <!--                        type="file"-->
+        <!--                        id="image-input"-->
+        <!--                        name="photos"-->
+        <!--                        accept="image/jpeg"-->
+        <!--                        multiple-->
+        <!--                />-->
+        <!--                <br/>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <div class="container DragContainer" id="DragContainer">
+
+            <div >
+                <div class="custom__form">
+                    <div class="custom__image-container">
+                        <label id="add-img-label" for="add-single-img">Додати фото </label>
+                        <input type="file" id="add-single-img" accept="image/jpeg"/>
+                    </div>
+                    <input
+                            type="file"
+                            id="image-input"
+                            name="photos"
+                            accept="image/jpeg"
+                            multiple
+                    />
+                    <br/>
+                </div>
+
             </div>
-            <input
-                    type="file"
-                    id="image-input"
-                    name="photos"
-                    accept="image/jpeg"
-                    multiple
-            />
-            <br/>
+
+
         </div>
 
 
+        <div class="container">
         <div class="displeyFlex_Space_Bettwen">
 
             <div class="form-field">
@@ -72,10 +98,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
 <script src="js/bootstrap.bundle.min.js"></script>
 <script>
+
     // Global variables
     const imgInputHelper = document.getElementById("add-single-img");
     const imgInputHelperLabel = document.getElementById("add-img-label");
     const imgContainer = document.querySelector(".custom__image-container");
+    const dragContainer = document.querySelector(".DragContainer");
     const imgFiles = [];
 
     const addImgHandler = () => {
@@ -84,12 +112,64 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         // Generate img preview
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        console.log(file.name);
         reader.onload = () => {
+            // const newImg = document.createElement("img");
+            // newImg.id = "imgProduct";
+            // newImg.src = reader.result;
+            // imgContainer.insertBefore(newImg, imgInputHelperLabel);
             const newImg = document.createElement("img");
-            newImg.id = "imgProduct";
+           newImg.width = 50;
+           newImg.height = 50;
+
             newImg.src = reader.result;
-            imgContainer.insertBefore(newImg, imgInputHelperLabel);
+            const div =  document.createElement("div");
+            div.className="box";
+            div.draggable = true;
+            div.appendChild(newImg);
+            document.getElementById("DragContainer").appendChild(div);
+            var dragSrcEl = null;
+
+            div.addEventListener('dragstart', function (e) {
+                this.style.opacity = '0.4';
+
+                dragSrcEl = this;
+
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);
+                }, false);
+            div.addEventListener('dragenter', function (e) {
+                this.classList.add('over');
+            }, false);
+            div.addEventListener('dragover', function (e){
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+
+                e.dataTransfer.dropEffect = 'move';
+
+                return false;
+            }, false);
+            div.addEventListener('dragleave', function (e){
+                this.classList.remove('over');
+            }, false);
+            div.addEventListener('drop', function (e){
+                e.stopPropagation();
+
+                if (dragSrcEl !== this) {
+                    dragSrcEl.innerHTML = this;
+                    this.innerHTML = e.dataTransfer.getData('text/html');
+                }
+
+                return false;
+            }, false);
+            div.addEventListener('dragend', function (e){
+                this.style.opacity = '1';
+                let items = document.querySelectorAll('.container .box');
+                items.forEach(function (item) {
+                    item.classList.remove('over');
+                });
+            }, false);
+            // dragContainer.insertBefore(div, imgInputHelperLabel);
         };
         // Store img file
         imgFiles.push(file);
@@ -98,10 +178,41 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         return;
     };
 
-
     imgInputHelper.addEventListener("change", addImgHandler);
 
 
 </script>
+
+<!--<script>-->
+<!--    // Global variables-->
+<!--    const imgInputHelper = document.getElementById("add-single-img");-->
+<!--    const imgInputHelperLabel = document.getElementById("add-img-label");-->
+<!--    const imgContainer = document.querySelector(".custom__image-container");-->
+<!--    const imgFiles = [];-->
+<!---->
+<!--    const addImgHandler = () => {-->
+<!--        const file = imgInputHelper.files[0];-->
+<!--        if (!file) return;-->
+<!--        // Generate img preview-->
+<!--        const reader = new FileReader();-->
+<!--        reader.readAsDataURL(file);-->
+<!--        reader.onload = () => {-->
+<!--            const newImg = document.createElement("img");-->
+<!--            newImg.id = "imgProduct";-->
+<!--            newImg.src = reader.result;-->
+<!--            imgContainer.insertBefore(newImg, imgInputHelperLabel);-->
+<!--        };-->
+<!--        // Store img file-->
+<!--        imgFiles.push(file);-->
+<!--        // Reset image input-->
+<!--        imgInputHelper.value = "";-->
+<!--        return;-->
+<!--    };-->
+<!---->
+<!--    imgInputHelper.addEventListener("change", addImgHandler);-->
+<!---->
+<!---->
+<!--</script>-->
+
 </body>
 </html>

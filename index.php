@@ -13,41 +13,44 @@
 <?php include "_header.php"; ?>
 
 <?php
-    include_once "connection_database.php";
+include_once "connection_database.php";
 ?>
 
 
 <div class="container">
-    <h1 class="text-center">Список продуктів</h1>
-    <section style="background-color: #eee;">
-        <div class="container py-5">
+        <div class="container containerMain py-5">
             <div class="row">
                 <?php
-                $sql = "SELECT * FROM tbl_products";
-                foreach($dbh->query($sql) as $row) {
+                $sql = "SELECT p.id, p.name, p.price, pi.name as image
+                from tbl_products p, tbl_product_images pi 
+                where p.id=pi.product_id
+                and pi.priority=1;";
+                foreach ($dbh->query($sql) as $row) {
                     $id = $row['id'];
                     $image = $row['image'];
                     $name = $row["name"];
                     $price = $row["price"];
-                    //echo "<h1>$id</h1>";
                     echo '
-                <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
+                <div class="col-md-6 col-lg-4 mb-4 mb-md-0">      
                     <div class="card">
-                        <img src="images/' . $image . '"
-                             class="card-img-top" alt="Клавіатура"/>
+                    
+                        <img src="images/' . $image . '" class="card-img-top" alt="Клавіатура"/>           
                         <div class="card-body">
+                        
+                            <div class="d-flex justify-content-between mb-3" style="height: 100px">
+                               <h5 class="mb-0">' . $name . '</h5>
+                           </div>
 
-                            <div class="d-flex justify-content-between mb-3">
-                                <h5 class="mb-0">' . $name . '</h5>
-                            </div>
-
-                            <div class="mb-2 d-flex justify-content-between">
+                           <div class="mb-2 d-flex justify-content-between">
                                 <h5 class="text-dark mb-0">' . $price . '₴</h5>
-                                <button type="button" class="btn btn-success">Купить</button>
+                                <a href="product.php?id=' . $id . '" class="btn btn-success">Купить</a>
                             </div>
-                        </div>
-                    </div>
+                           
+                       </div>
+                        
+                    </div>            
                 </div>
+                
                     ';
                 }
                 ?>
@@ -55,7 +58,6 @@
 
             </div>
         </div>
-    </section>
 </div>
 
 <script src="js/bootstrap.bundle.min.js"></script>
