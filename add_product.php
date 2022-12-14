@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Додати Товар</title>
+    <title>Сторінка Додати Товар</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/addProductStyle.css">
 </head>
@@ -30,9 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             <div class="col-12 logo">
                 <img class="logoImg"
                      id="imgAvatar"
-                     src="https://cdn-irec.r-99.com/sites/default/files/imagecache/300o/product-images/896767/MwbBNcvG9f2sxDif7MZbjQ.jpeg"
-                     alt="">
-                <h1>Додати Товар</h1>
+                     alt=""
+                src="images/logo.jpg">
+                <h1>Магазинчик<br>Додавання товару</h1>
+
             </div>
         </div>
 
@@ -50,7 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             />
             <br/>
         </div>
-
 
 
         <div class="displeyFlex_Space_Bettwen">
