@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -15,7 +16,6 @@
 <?php
 include_once "connection_database.php";
 ?>
-
 
 <div class="container">
         <div class="container containerMain py-5">
@@ -41,10 +41,15 @@ include_once "connection_database.php";
                                <h5 class="mb-0">' . $name . '</h5>
                            </div>
 
-                           <div class="mb-2 d-flex justify-content-between">
+                           <div class="mb-2 d-flex justify-content-between ">
                                 <h5 class="text-dark mb-0">' . $price . '₴</h5>
                                 <a href="product.php?id=' . $id . '" class="btn btn-success">Купить</a>
+                                <a href="deleteProduct.php?id=' . $id . '" class="btn btn-success">Видалить</a>
+                                <a href="editProduct.php?id=' . $id . '" class="btn btn-success">Редагування</a>
                             </div>
+                           
+                            
+                      
                            
                        </div>
                         
@@ -59,7 +64,6 @@ include_once "connection_database.php";
             </div>
         </div>
 </div>
-
 <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

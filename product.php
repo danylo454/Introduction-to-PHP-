@@ -10,6 +10,7 @@ $sql = 'SELECT p.id, p.name, p.price, p.description
 
 $sth = $dbh->prepare($sql);
 $sth->execute(['id' => $id]);
+
 if ($row = $sth->fetch()) {
     $name=$row['name'];
     $price=$row['price'];
