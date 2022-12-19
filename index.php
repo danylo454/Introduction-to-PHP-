@@ -31,7 +31,7 @@ include_once "connection_database.php";
                     $name = $row["name"];
                     $price = $row["price"];
                     echo '
-                <div class="col-md-6 col-lg-4 mb-4 mb-md-0">      
+                <div class="col-md-6 col-lg-4 mb-4 mb-md-0 product-item">      
                     <div class="card">
                     
                         <img src="images/' . $image . '" class="card-img-top" alt="Клавіатура"/>           
@@ -69,11 +69,15 @@ include_once "connection_database.php";
            const id = this.dataset["delete"];
            var bodyFormData = new FormData();
            bodyFormData.append('id', id);
+           const item = $(this);
            axios({
                method: "post",
                url: "/deleteProduct.php",
                data: bodyFormData
            }).then(function(resp) {
+               if(resp.data="Успішне видалення") {
+                   item.closest('.product-item').remove();
+               }
                console.log("SERVER Response ", resp);
            });
        });
