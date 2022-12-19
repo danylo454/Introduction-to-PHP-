@@ -1,5 +1,5 @@
 <?php
-require_once "config.php";
+require_once "lib/config.php";
 
 try {
     $dbh = new PDO(DB_DRIVER.':host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASSWORD,

@@ -32,7 +32,7 @@ include_once "connection_database.php";
                     $price = $row["price"];
                     echo '
                 <div class="col-md-6 col-lg-4 mb-4 mb-md-0 product-item">      
-                    <div class="card">
+                    <div class="card" style="margin-bottom: 25px;">
                     
                         <img src="images/' . $image . '" class="card-img-top" alt="Клавіатура"/>           
                         <div class="card-body">
@@ -72,7 +72,7 @@ include_once "connection_database.php";
            const item = $(this);
            axios({
                method: "post",
-               url: "/deleteProduct.php",
+               url: "requests/deleteProduct.php",
                data: bodyFormData
            }).then(function(resp) {
                if(resp.data="Успішне видалення") {

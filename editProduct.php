@@ -40,7 +40,7 @@ $images = $sth->fetchAll();
 <?php include "_header.php"; ?>
 <div class="wrapper">
 
-    <form class="p-3 mt-3" enctype="multipart/form-data" method="post" action="updateProduct.php">
+    <form class="p-3 mt-3" enctype="multipart/form-data" method="post" action="requests/updateProduct.php">
         <input type="hidden" name="idProduct" id="idProduct" value="<?php echo $id; ?>">
         <div class="row">
             <div class="col-12 logo">
