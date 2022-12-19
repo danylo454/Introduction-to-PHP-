@@ -1,23 +1,28 @@
 <?php
+//request has arrived
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     include_once($_SERVER['DOCUMENT_ROOT'] . '/lib/guidv4.php');
+    //in post request we are get name, price, description;
     $name = $_POST['nameProduct'];
     $price = $_POST['priceProduct'];
     $description = $_POST['descriptionProducts'];
     include_once($_SERVER['DOCUMENT_ROOT'] . '/connection_database.php');
     $sql = 'INSERT INTO tbl_products (name, price, date_create, description) VALUES(:name, :price, NOW(), :description);';
     $stmt = $dbh->prepare($sql);
+    //We are substitute the parameters for the base
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':price', $price);
     $stmt->bindParam(':description', $description);
+    //Maked addition in base
     $stmt->execute();
-
+//l takes last product id
     $sql = "SELECT LAST_INSERT_ID() as id;";
     $item = $dbh->query($sql)->fetch();
     $insert_id = $item['id'];
-
+//get in post images
     $images = $_POST['images'];
     $count=1;
+//    l am make image in base64 and insert in project and database
     foreach ($images as $base64) {
         $dir_save = 'images/';
         $image_name = guidv4() . '.jpeg';
@@ -106,16 +111,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/jquery-3.6.2.min.js"></script>
-<script>
 
+
+<!--this script is responsible for adding, editing and removing photos from the home tree-->
+<script>
+//random and not repeat  uuid
     function uuidv4() {
         return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
     }
     $(function() {
+        // get in house tree element
         const image = document.getElementById("image");
+        //Set in this house tree elemet onChange
         image.onchange=function(e){
+            //new files(images)
             const files = e.target.files;
             //console.log("Files", files);
             for (let i = 0; i<files.length;i++)
@@ -126,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     // console.log("base64", base64);
                     const id=uuidv4();
                     const data=`
-                    <div class="row">
+                    <div class="row" >
                         <div class="col-6">
                             <div class="fs-4 ms-2">
                                 <label for="${id}" style="cursor: pointer">
@@ -142,12 +153,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                     <div>
-                        <img src="${base64}" id="${id}_image" width="100%">
+                        <img src="${base64}" id="${id}_image" width="100%" height="135px">
                         <input type="hidden" id="${id}_file" value="${base64}" name="images[]">
                     </div>
                    `;
                     const item=document.createElement('div');
-                    item.className="col-md-3 item-image";
+                    item.className="col-md-3 item-image maxWidthImagesContainer";
                     item.innerHTML=data;
                     $("#selectImages").before(item);
                 });

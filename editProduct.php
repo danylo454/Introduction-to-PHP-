@@ -4,10 +4,10 @@ $id = $_GET['id'];
 $name = '';
 $price = '';
 $description = '';
+
 $sql = 'SELECT p.id, p.name, p.price, p.description 
         from tbl_products p
         where p.id=:id;';
-
 $sth = $dbh->prepare($sql);
 $sth->execute(['id' => $id]);
 
@@ -40,8 +40,8 @@ $images = $sth->fetchAll();
 <?php include "_header.php"; ?>
 <div class="wrapper">
 
-    <form class="p-3 mt-3" enctype="multipart/form-data" method="post">
-
+    <form class="p-3 mt-3" enctype="multipart/form-data" method="post" action="updateProduct.php">
+        <input type="hidden" name="idProduct" id="idProduct" value="<?php echo $id; ?>">
         <div class="row">
             <div class="col-12 logo">
                 <img class="logoImg"
@@ -49,7 +49,6 @@ $images = $sth->fetchAll();
                      alt=""
                      src="images/logo.jpg">
                 <h1>Магазинчик<br>Оновлення товару</h1>
-
             </div>
         </div>
 
@@ -57,15 +56,16 @@ $images = $sth->fetchAll();
             <div class="container">
                 <div class="row" id="list_images">
                     <?php foreach ($images as $row) {
+
                         echo '
                         <div class="col-md-2 item-image">
                         <div class="row">
                             <div class="col-6">
                                 <div class="fs-4 ms-2">
-                                    <label for="'.$row["id"].'">
+                                    <label for="' . $row["id"] . '">
                                         <i class="fa fa-pencil" style="cursor: pointer;" aria-hidden="true"></i>
                                     </label>
-                                    <input type="file" class="form-control d-none edit" id="'.$row["id"].'">
+                                    <input type="file" class="form-control d-none edit" id="' . $row["id"] . '">
                                 </div>
                             </div>
                             <div class="col-6">
@@ -73,10 +73,10 @@ $images = $sth->fetchAll();
                                     <i class="fa fa-times" style="cursor: pointer" aria-hidden="true"></i>
                                 </div>
                             </div>
-                        </div>
+                        </div>               
                         <div>
-                            <img src="images/'.$row["name"].'" id="'.$row["id"].'_image" alt="photo" style="width: 100%;height: 150px;border-radius: 50px;">
-                            <input type="hidden" id="'.$row["id"].'_file" value="images/' . $row["name"] . '" name="images[]">
+                            <img src="images/' . $row["name"] . '" id="' . $row["id"] . '_image" alt="photo" style="width: 100%;height: 150px;border-radius: 50px;">
+                            <input type="hidden" id="' . $row["id"] . '_file" value="images/' . $row["name"] . '" name="images[]">
                         </div>
                         
                         </div>                                           
@@ -95,12 +95,14 @@ $images = $sth->fetchAll();
         </div>
 
 
+
         <div class="container">
             <div class="displeyFlex_Space_Bettwen">
 
                 <div class="form-field">
                     <input type="text" name="nameProduct" id="nameProduct" value="<?php echo $name; ?>">
                 </div>
+
 
                 <div class="form-field d-flex align-items-center">
                     <input type="number" name="priceProduct" id="priceProduct" value="<?php echo $price; ?>">

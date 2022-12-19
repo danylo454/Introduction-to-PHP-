@@ -1,21 +1,24 @@
 <?php
 include_once "connection_database.php";
+
 $id=$_GET['id'];
 $name='';
 $price='';
 $description='';
+//При нажаття ми отримуємо ід і по цьому ід ми достаємо продукт
 $sql = 'SELECT p.id, p.name, p.price, p.description 
         from tbl_products p
         where p.id=:id;';
 
 $sth = $dbh->prepare($sql);
 $sth->execute(['id' => $id]);
-
+// Отримали продукс
 if ($row = $sth->fetch()) {
     $name=$row['name'];
     $price=$row['price'];
     $description=$row['description'];
 }
+// Отрумуємо фото і сортуємо по пріорітету
 $sql = "SELECT pi.name, pi.priority 
         FROM tbl_product_images pi
         WHERE pi.product_id=:id
@@ -55,13 +58,13 @@ $images = $sth->fetchAll();
                             <div class="images p-3">
 
                                 <div class="text-center p-4">
-                                    <img id="main-image" src="images/<?php echo $images[0]['name']; ?>" width="250" />
+                                    <img id="main-image" src="images/<?php echo $images[0]['name']; ?>" width="250" height="250" />
                                 </div>
                                 <div class="thumbnail text-center">
                                     <?php
                                     foreach ($images as $row)
                                     {
-                                        echo'<img onclick="change_image(this)" src="images/'.$row["name"].'" width="70">';
+                                        echo'<img onclick="change_image(this)" style="padding: 5px;" src="images/'.$row["name"].'" width="70" height="70">';
                                     }
                                     ?>
                                 </div>
@@ -70,7 +73,7 @@ $images = $sth->fetchAll();
                         <div class="col-md-6">
                             <div class="product p-4">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <span class="ml-1">Back</span> </div> <i class="fa fa-shopping-cart text-muted"></i>
+                                    <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <a style="text-decoration: none;" href="/" class="ml-1">Back</a> </div> <i class="fa fa-shopping-cart text-muted"></i>
                                 </div>
                                 <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand">Orianz</span>
                                     <h5 class="text-uppercase"><?php echo $name; ?></h5>

@@ -15,7 +15,6 @@ foreach ($images as $row) {
     $fullPath = $pathImagesdirec.$nameimages;
     unlink($fullPath);
 }
-unlink($row["name"]);
 
 //видаляємо фотки
 $sql = 'DELETE FROM tbl_product_images WHERE product_id= :id;';

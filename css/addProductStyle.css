@@ -137,3 +137,6 @@ body {
     border-radius: 5px;
     object-fit: cover;
 }
+.maxWidthImagesContainer{
+    width: 150px;
+}
