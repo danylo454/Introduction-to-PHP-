@@ -16,7 +16,7 @@ if ($row = $sth->fetch()) {
     $price = $row['price'];
     $description = $row['description'];
 }
-$sql = "SELECT pi.name, pi.priority 
+$sql = "SELECT pi.id, pi.name, pi.priority 
         FROM tbl_product_images pi
         WHERE pi.product_id=:id
         ORDER BY pi.priority;";
@@ -62,10 +62,10 @@ $images = $sth->fetchAll();
                         <div class="row">
                             <div class="col-6">
                                 <div class="fs-4 ms-2">
-                                    <label for="${id}">
+                                    <label for="'.$row["id"].'">
                                         <i class="fa fa-pencil" style="cursor: pointer;" aria-hidden="true"></i>
                                     </label>
-                                    <input type="file" class="form-control d-none edit" id="${id}">
+                                    <input type="file" class="form-control d-none edit" id="'.$row["id"].'">
                                 </div>
                             </div>
                             <div class="col-6">
@@ -75,8 +75,8 @@ $images = $sth->fetchAll();
                             </div>
                         </div>
                         <div>
-                            <img src="images/'.$row["name"].'" id="${id}_image" alt="photo" style="width: 100%;height: 150px;border-radius: 50px;">
-                            <input type="hidden" id="${id}_file" value="images/' . $row["name"] . '" name="images[]">
+                            <img src="images/'.$row["name"].'" id="'.$row["id"].'_image" alt="photo" style="width: 100%;height: 150px;border-radius: 50px;">
+                            <input type="hidden" id="'.$row["id"].'_file" value="images/' . $row["name"] . '" name="images[]">
                         </div>
                         
                         </div>                                           

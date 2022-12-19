@@ -44,18 +44,12 @@ include_once "connection_database.php";
                            <div class="mb-2 d-flex justify-content-between ">
                                 <h5 class="text-dark mb-0">' . $price . '₴</h5>
                                 <a href="product.php?id=' . $id . '" class="btn btn-success">Купить</a>
-                                <a href="deleteProduct.php?id=' . $id . '" class="btn btn-success">Видалить</a>
+                                <a href="#" class="btn btn-success" data-delete="'.$id.'">Видалить</a>
                                 <a href="editProduct.php?id=' . $id . '" class="btn btn-success">Редагування</a>
                             </div>
-                           
-                            
-                      
-                           
                        </div>
-                        
                     </div>            
                 </div>
-                
                     ';
                 }
                 ?>
@@ -65,5 +59,25 @@ include_once "connection_database.php";
         </div>
 </div>
 <script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery-3.6.2.min.js"></script>
+<script src="js/axios.min.js"></script>
+<script>
+    $(function(){
+       $("body").on('click', "[data-delete]", function(e) {
+           e.preventDefault();
+           //console.log("Delete element ", e.target);
+           const id = this.dataset["delete"];
+           var bodyFormData = new FormData();
+           bodyFormData.append('id', id);
+           axios({
+               method: "post",
+               url: "/deleteProduct.php",
+               data: bodyFormData
+           }).then(function(resp) {
+               console.log("SERVER Response ", resp);
+           });
+       });
+    });
+</script>
 </body>
 </html>

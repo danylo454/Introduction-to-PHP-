@@ -72,11 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="mb-3">
             <div class="container">
                 <div class="row" id="list_images">
-                    <div class="col-md-2">
-                        <label for="image" style="cursor: pointer;" class="form-label text-success">
-                            <i class="fa fa-plus-square-o" style="font-size:120px" aria-hidden="true"></i>
+                    <div class="col-md-3" id="selectImages">
+                        <label for="image"
+                               style="font-size: 120px; cursor:pointer;"
+                               class="form-label text-success">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
                         </label>
-                        <input type="file" class="form-control d-none" id="image" multiple>
+                        <input type="file" class="d-none" multiple id="image" >
                     </div>
                 </div>
             </div>
@@ -111,69 +113,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
     }
-
-    //window.onload
-    $(function () {
-//-----------------------SELECT IMAGES LIST---------------------------
+    $(function() {
         const image = document.getElementById("image");
-        image.onchange = function (e) {
+        image.onchange=function(e){
             const files = e.target.files;
-            for (let i = 0; i < files.length; i++) {
+            //console.log("Files", files);
+            for (let i = 0; i<files.length;i++)
+            {
                 const reader = new FileReader();
-                reader.addEventListener('load', function () {
-                    const base64 = reader.result;
-                    const id = uuidv4();
-                    const data = `
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="fs-4 ms-2">
-                                    <label for="${id}">
-                                        <i class="fa fa-pencil" style="cursor: pointer;" aria-hidden="true"></i>
-                                    </label>
-                                    <input type="file" class="form-control d-none edit" id="${id}">
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="text-end fs-4 text-danger me-2 remove">
-                                    <i class="fa fa-times" style="cursor: pointer" aria-hidden="true"></i>
-                                </div>
+                reader.addEventListener('load', function() {
+                    const base64=reader.result;
+                    // console.log("base64", base64);
+                    const id=uuidv4();
+                    const data=`
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="fs-4 ms-2">
+                                <label for="${id}" style="cursor: pointer">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </label>
+                                <input type="file" class="d-none edit" id="${id}">
                             </div>
                         </div>
-                        <div>
-                            <img src="${base64}" id="${id}_image" alt="photo" style="width: 100%;height: 150px;border-radius: 50px;">
-                            <input type="hidden" id="${id}_file" value="${base64}" name="images[]">
+                        <div class="col-6">
+                            <div class="text-end fs-4 text-danger me2 remove">
+                                <i class="fa fa-times" style="cursor: pointer" aria-hidden="true"></i>
+                            </div>
                         </div>
-                    `;
-                    const item = document.createElement('div');
-                    item.className = "col-md-2 item-image";
-                    item.innerHTML = data;
-                    document.getElementById('list_images').prepend(item);
+                    </div>
+                    <div>
+                        <img src="${base64}" id="${id}_image" width="100%">
+                        <input type="hidden" id="${id}_file" value="${base64}" name="images[]">
+                    </div>
+                   `;
+                    const item=document.createElement('div');
+                    item.className="col-md-3 item-image";
+                    item.innerHTML=data;
+                    $("#selectImages").before(item);
                 });
                 const file = files[i];
-                if (file)
-                    reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
             }
-            image.value = "";
         }
-//-----------------------REMOVE ITEM BY LIST---------------------------------------------
-        $("#list_images").on('click', '.remove', function () {
-            $(this).closest('.item-image').remove();
-        });
-//-----------------------CHANGE IMAGE LIST ITEM-------------------------------------
-        let edit_id = 0;
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-            const base64 = reader.result;
-            document.getElementById(`${edit_id}_image`).src = base64;
-            document.getElementById(`${edit_id}_file`).value = base64;
-        });
 
-
-        $("#list_images").on('change', '.edit', function (e) {
+        //--------------remove item---------
+        $("#list_images").on("click", '.remove', function() {
+            $(this).closest(".item-image").remove();
+        });
+        //---------edit item------
+        let edit_id=0;
+        $("#list_images").on("change", '.edit', function(e) {
             edit_id = e.target.id;
+            const reader = new FileReader();
+            reader.addEventListener('load',function() {
+                const base64=reader.result;
+                document.getElementById(`${edit_id}_image`).src=base64;
+                document.getElementById(`${edit_id}_file`).value=base64;
+            });
+            console.log("Edit id", edit_id);
             const file = e.target.files[0];
             reader.readAsDataURL(file);
-            this.value = "";
+            this.value="";
         });
     });
 </script>
